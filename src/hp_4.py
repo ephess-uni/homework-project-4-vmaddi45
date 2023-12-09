@@ -48,7 +48,7 @@ def fees_report(infile, outfile):
         writer = DictWriter(file, fieldnames=['patron_id', 'late_fees'])
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
-            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee))
+            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)})
 
 
 # The following main selection block will only run when you choose
