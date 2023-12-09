@@ -22,15 +22,23 @@ def add_date_range(values, start_date):
     return result
 
 def fees_report(infile, outfile):
-   
+    """Calculates late fees per patron id and writes a summary report to
+    outfile."""
     late_fees_dict = defaultdict(float)
 
     with open(infile, 'r') as file:
         reader = DictReader(file)
         for row in reader:
-            due_date = datetime.strptime(row['date_due'], '%m/%d/%Y')
-            return_date = datetime.strptime(row['date_returned'], '%m/%d/%y')
-            
+            due_date_str = row['date_due']
+            return_date_str = row['date_returned']
+
+            try:
+                due_date = datetime.strptime(due_date_str, '%m/%d/%Y')
+                return_date = datetime.strptime(return_date_str, '%m/%d/%y')
+            except ValueError as e:
+                print(f"Error parsing dates. due_date_str: {due_date_str}, return_date_str: {return_date_str}")
+                raise e
+
             if return_date > due_date:
                 days_late = (return_date - due_date).days
                 late_fee = days_late * 0.25
@@ -40,7 +48,8 @@ def fees_report(infile, outfile):
         writer = DictWriter(file, fieldnames=['patron_id', 'late_fees'])
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
-            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)})
+            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee))
+
 
 # The following main selection block will only run when you choose
 # "Run -> Module" in IDLE.  Use this section to run test code.  The
