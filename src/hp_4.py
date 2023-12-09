@@ -22,8 +22,7 @@ def add_date_range(values, start_date):
     return result
 
 def fees_report(infile, outfile):
-    """Calculates late fees per patron id and writes a summary report to
-    outfile."""
+   
     late_fees_dict = defaultdict(float)
 
     with open(infile, 'r') as file:
@@ -49,8 +48,7 @@ def fees_report(infile, outfile):
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
             writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)})
-
-
+            
 # The following main selection block will only run when you choose
 # "Run -> Module" in IDLE.  Use this section to run test code.  The
 # template code below tests the fees_report function.
