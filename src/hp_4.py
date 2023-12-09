@@ -3,6 +3,10 @@
 from datetime import datetime, timedelta
 from csv import DictReader, DictWriter
 from collections import defaultdict
+try:
+    from src.util import get_data_file_path
+except ImportError:
+    from util import get_data_file_path
 
 def reformat_dates(old_dates):
     
