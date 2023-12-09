@@ -6,15 +6,12 @@ from collections import defaultdict
 
 
 def reformat_dates(old_dates):
-    """Accepts a list of date strings in format yyyy-mm-dd, re-formats each
-    element to a format dd mmm yyyy--01 Jan 2001."""
+    
     return [datetime.strptime(date, '%Y-%m-%d').strftime('%d %b %Y') for date in old_dates]
 
 
 def date_range(start, n):
-    """For input date string `start`, with format 'yyyy-mm-dd', returns
-    a list of of `n` datetime objects starting at `start` where each
-    element in the list is one day after the previous."""
+    
     if not isinstance(start, str):
         raise TypeError("Start must be a string.")
     if not isinstance(n, int):
@@ -25,17 +22,14 @@ def date_range(start, n):
 
 
 def add_date_range(values, start_date):
-    """Adds a daily date range to the list `values` beginning with
-    `start_date`.  The date, value pairs are returned as tuples
-    in the returned list."""
+    
     date_sequence = date_range(start_date, len(values))
     return list(zip(date_sequence, values))
 
 
 
 def fees_report(infile, outfile):
-    """Calculates late fees per patron id and writes a summary report to
-    outfile."""
+   
     late_fees_dict = defaultdict(float)
 
     with open(infile, 'r') as csv_file:
@@ -54,7 +48,7 @@ def fees_report(infile, outfile):
         writer = DictWriter(out_csv, fieldnames=['patron_id', 'late_fees'])
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
-            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)}
+            writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)})
 
 
 
