@@ -22,10 +22,11 @@ def add_date_range(values, start_date):
     return result
 
 def fees_report(infile, outfile):
-   
+    """Calculates late fees per patron id and writes a summary report to
+    outfile."""
     late_fees_dict = defaultdict(float)
 
-    with open(infile, 'r') as file:
+    with open(get_data_file_path(infile), 'r') as file:
         reader = DictReader(file)
         for row in reader:
             due_date_str = row['date_due']
@@ -33,7 +34,7 @@ def fees_report(infile, outfile):
 
             try:
                 due_date = datetime.strptime(due_date_str, '%m/%d/%Y')
-                return_date = datetime.strptime(return_date_str, '%m/%d/%y')
+                return_date = datetime.strptime(return_date_str, '%m/%d/%Y')
             except ValueError as e:
                 print(f"Error parsing dates. due_date_str: {due_date_str}, return_date_str: {return_date_str}")
                 raise e
@@ -43,7 +44,7 @@ def fees_report(infile, outfile):
                 late_fee = days_late * 0.25
                 late_fees_dict[row['patron_id']] += late_fee
 
-    with open(outfile, 'w', newline='') as file:
+    with open(get_data_file_path(outfile), 'w', newline='') as file:
         writer = DictWriter(file, fieldnames=['patron_id', 'late_fees'])
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
