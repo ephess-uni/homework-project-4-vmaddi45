@@ -35,7 +35,7 @@ def fees_report(infile, outfile):
         reader = DictReader(csv_file)
         for row in reader:
             date_due = datetime.strptime(row['date_due'], '%m/%d/%Y')
-            date_returned = datetime.strptime(row['date_returned'], '%m/%d/%y')
+            date_returned = datetime.strptime(row['date_returned'], '%m/%d/%Y') 
 
             if date_returned > date_due:
                 days_late = (date_returned - date_due).days
@@ -48,6 +48,7 @@ def fees_report(infile, outfile):
         writer.writeheader()
         for patron_id, late_fee in late_fees_dict.items():
             writer.writerow({'patron_id': patron_id, 'late_fees': "{:.2f}".format(late_fee)})
+            
 # The following main selection block will only run when you choose
 # "Run -> Module" in IDLE.  Use this section to run test code.  The
 # template code below tests the fees_report function.
